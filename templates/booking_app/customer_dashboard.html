@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard — Tourism Booking{% endblock %}
+
+{% block content %}
+<style>
+  .cd-header { margin-bottom: 1.75rem; }
+  .cd-header h1 { font-family: var(--font-display); font-size: 1.75rem; margin: 0; }
+  .cd-header p { color: var(--color-ink-soft); margin: 0.25rem 0 0; }
+
+  .cd-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.5rem;
+  }
+  @media (max-width: 900px) { .cd-grid { grid-template-columns: 1fr; } }
+
+  .cd-card {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.4rem;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 1.25rem;
+  }
+  .cd-card h2 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    margin: 0 0 1rem;
+  }
+
+  .cd-table { width: 100%; font-size: 0.9rem; border-collapse: collapse; }
+  .cd-table th {
+    text-align: left; color: var(--color-ink-soft); font-weight: 500;
+    padding: 0.5rem 0.4rem; border-bottom: 1px solid var(--color-border); font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .cd-table td { padding: 0.7rem 0.4rem; border-bottom: 1px solid #f0ebe0; vertical-align: middle; }
+  .cd-table tr:last-child td { border-bottom: none; }
+
+  .status-chip {
+    display: inline-block; padding: 0.2rem 0.55rem; border-radius: 999px;
+    font-size: 0.72rem; font-weight: 600;
+  }
+  .status-chip.confirmed, .status-chip.completed { background: #dcfce7; color: #166534; }
+  .status-chip.pending, .status-chip.payment_pending { background: #fef9c3; color: #854d0e; }
+  .status-chip.cancelled, .status-chip.expired { background: #fee2e2; color: #991b1b; }
+
+  .profile-box { text-align: center; }
+  .profile-avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark));
+    color: #fff; font-size: 1.6rem; font-weight: 700;
+    display: grid; place-items: center; margin: 0 auto 0.75rem;
+  }
+  .profile-box h3 { font-size: 1.05rem; margin: 0; }
+  .profile-box p { color: var(--color-ink-soft); font-size: 0.85rem; margin: 0.2rem 0 1rem; }
+
+  .empty-msg { color: var(--color-ink-soft); text-align: center; padding: 1.5rem 0; font-size: 0.9rem; }
+</style>
+
+<div class="cd-header">
+  <h1>My Dashboard</h1>
+  <p>Welcome back, {{ user.get_full_name|default:user.username }}.</p>
+</div>
+
+<div class="cd-grid">
+  <!-- LEFT: bookings + payments -->
+  <div>
+    <div class="cd-card">
+      <h2>My Bookings</h2>
+      {% if bookings %}
+        <table class="cd-table">
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Resource</th>
+              <th>Dates</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for b in bookings %}
+            <tr>
+              <td><strong>{{ b.reference }}</strong></td>
+              <td>{{ b.resource.name }}</td>
+              <td style="font-size:0.82rem;color:var(--color-ink-soft);">
+                {{ b.start_datetime|date:"M d" }} – {{ b.end_datetime|date:"M d, Y" }}
+              </td>
+              <td>
+                <span class="status-chip {{ b.status }}">{{ b.get_status_display }}</span>
+              </td>
+              <td class="text-end">
+                <a href="{% url 'booking_app:booking_detail' b.reference %}" class="btn btn-tb-outline btn-sm">View</a>
+                {% if b.status == "confirmed" or b.status == "completed" %}
+                  <a href="{% url 'booking_app:booking_receipt' b.reference %}"
+                     class="btn btn-tb-accent btn-sm" target="_blank">Receipt</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty-msg">You have no bookings yet. <a href="{% url 'booking_app:listing_list' %}">Browse listings</a></p>
+      {% endif %}
+    </div>
+
+    <div class="cd-card">
+      <h2>Payment History</h2>
+      {% if payments %}
+        <table class="cd-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Method</th>
+              <th>Status</th>
+              <th>Receipt #</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in payments %}
+            <tr>
+              <td>{{ p.created_at|date:"M d, Y H:i" }}</td>
+              <td><strong>KES {{ p.amount }}</strong></td>
+              <td>{{ p.get_method_display }}</td>
+              <td><span class="status-chip {{ p.status }}">{{ p.get_status_display }}</span></td>
+              <td>{{ p.mpesa_receipt_number|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="empty-msg">No payments yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- RIGHT: profile card -->
+  <div>
+    <div class="cd-card profile-box">
+      <div class="profile-avatar">
+        {{ user.first_name|first|default:user.username|first|upper }}
+      </div>
+      <h3>{{ user.get_full_name|default:user.username }}</h3>
+      <p>{{ user.email }}</p>
+      {% if profile.id_number %}
+        <p class="small text-muted">ID: {{ profile.id_number }}</p>
+      {% endif %}
+      {% if user.phone_number %}
+        <p class="small text-muted">{{ user.phone_number }}</p>
+      {% endif %}
+      <a href="{% url 'booking_app:customer_profile' %}" class="btn btn-tb-outline btn-sm w-100">Edit Profile</a>
+    </div>
+
+    <div class="cd-card">
+      <h2>Quick links</h2>
+      <div class="d-grid gap-2">
+        <a href="{% url 'booking_app:listing_list' %}" class="btn btn-tb-accent">Browse Listings</a>
+        <a href="{% url 'booking_app:booking_verify' %}" class="btn btn-tb-outline">Verify a Booking</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

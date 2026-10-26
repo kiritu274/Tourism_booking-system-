@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Login — Tourism Booking{% endblock %}
+
+{% block content %}
+<div class="auth-split">
+
+  <!-- LEFT: Video + Green Overlay -->
+  <div class="auth-visual">
+    <video autoplay muted loop playsinline>
+      <source src="{% static 'videos/kkj.mp4' %}" type="video/mp4">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-beach-and-ocean-waves-4213-large.mp4" type="video/mp4">
+    </video>
+    <div class="auth-overlay"></div>
+
+    <div class="auth-visual-content">
+      <h2>Welcome Back!</h2>
+      <p>Stay connected — log in with your credentials<br>to continue your experience.</p>
+      <a href="{% url 'booking_app:register' %}" class="auth-outline-btn">Create Account</a>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="auth-form-panel">
+    <div class="auth-form-inner">
+      <h1>Sign In</h1>
+      <p class="auth-subtitle">Or use your email to log in</p>
+
+      <!-- Google Login Button only -->
+      <div class="auth-social">
+        <a href="{% url 'google_login' %}" class="google-btn">
+          <svg width="18" height="18" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            <path fill="none" d="M0 0h48v48H0z"/>
+          </svg>
+          Continue with Google
+        </a>
+      </div>
+
+      <div class="auth-divider">or</div>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger mb-3" style="font-size:0.9rem;border-radius:10px;">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        {% for field in form %}
+          <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label auth-label">
+              {{ field.label }}
+            </label>
+            {{ field }}
+            {% if field.errors %}
+              <div class="text-danger small mt-1">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <button type="submit" class="auth-submit-btn">
+          Sign In
+        </button>
+      </form>
+
+      <div class="text-center mt-3">
+        <a href="{% url 'booking_app:password_reset' %}" class="auth-link">
+          Forgot your password?
+        </a>
+      </div>
+
+      <p class="auth-footer-text">
+        No account?
+        <a href="{% url 'booking_app:register' %}">Register</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Full-bleed split layout */
+  .auth-split {
+    display: flex;
+    min-height: calc(100vh - 56px);
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: -1.5rem 0 0 !important;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    background: #f8faf9;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* LEFT – video */
+  .auth-visual {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .auth-visual video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .auth-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(15, 50, 35, 0.75) 0%, rgba(22, 101, 52, 0.65) 100%);
+    z-index: 1;
+  }
+  .auth-visual-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    padding: 2rem;
+    max-width: 380px;
+  }
+  .auth-visual-content h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.02em;
+  }
+  .auth-visual-content p {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+  .auth-outline-btn {
+    display: inline-block;
+    padding: 0.7rem 2.2rem;
+    border: 2px solid rgba(255,255,255,0.85);
+    border-radius: 999px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+  }
+  .auth-outline-btn:hover {
+    background: #fff;
+    color: #166534;
+  }
+
+  /* RIGHT – form */
+  .auth-form-panel {
+    flex: 0 0 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 2.2rem 2rem;
+  }
+  .auth-form-inner {
+    width: 100%;
+    max-width: 360px;
+  }
+  .auth-form-inner h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.3rem;
+    text-align: center;
+  }
+  .auth-subtitle {
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 1.4rem;
+  }
+
+  /* Google button */
+  .auth-social {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.3rem;
+  }
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    color: #3c4043;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .google-btn:hover {
+    background: #f8f9fa;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .auth-divider {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 0.85rem;
+    margin-bottom: 1.3rem;
+    position: relative;
+  }
+  .auth-divider::before,
+  .auth-divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 38%;
+    height: 1px;
+    background: #e5e7eb;
+  }
+  .auth-divider::before { left: 0; }
+  .auth-divider::after { right: 0; }
+
+  /* Form styling */
+  .auth-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #6b7280;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .auth-form-inner .form-control,
+  .auth-form-inner input[type="text"],
+  .auth-form-inner input[type="email"],
+  .auth-form-inner input[type="password"] {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
+    width: 100%;
+    background: #f8fafc;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .auth-form-inner .form-control:focus,
+  .auth-form-inner input:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+    background: #fff;
+    outline: none;
+  }
+
+  .auth-submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 999px;
+    background: #166534;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 0.4rem;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .auth-submit-btn:hover {
+    background: #14532d;
+    transform: translateY(-1px);
+  }
+
+  .auth-link {
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .auth-link:hover { color: #166534; }
+
+  .auth-footer-text {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+  .auth-footer-text a {
+    color: #166534;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .auth-split {
+      flex-direction: column;
+      width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    .auth-visual {
+      min-height: 260px;
+      flex: none;
+    }
+    .auth-form-panel {
+      flex: none;
+      width: 100%;
+      padding: 1.8rem 1.4rem 2.5rem;
+    }
+  }
+</style>
+{% endblock %}

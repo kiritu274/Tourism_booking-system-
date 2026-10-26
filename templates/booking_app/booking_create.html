@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Reserve: {{ resource.name }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3"><label>Start</label><input type="datetime-local" name="start_datetime" class="form-control" required></div>
+    <div class="mb-3"><label>End</label><input type="datetime-local" name="end_datetime" class="form-control" required></div>
+    <div class="mb-3"><label>Guests</label><input type="number" name="guests" value="1" min="1" class="form-control"></div>
+    <button type="submit" class="btn btn-primary">Reserve</button>
+  </form>
+{% endblock %}

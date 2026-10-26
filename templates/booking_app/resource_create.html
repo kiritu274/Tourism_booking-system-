@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}Add Listing – Room / Tour / Service{% endblock %}
+
+{% block content %}
+<style>
+  .add-listing-card {
+    max-width: 720px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 2rem;
+    border: 1px solid #e5e7eb;
+  }
+  .add-listing-card h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .add-listing-card .subtitle {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  .form-label { font-weight: 500; font-size: 0.9rem; }
+  .preview-box {
+    width: 100%;
+    height: 180px;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: #9ca3af;
+    background: #f9fafb;
+    overflow: hidden;
+  }
+  .preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
+
+<div class="add-listing-card">
+  <h1>Add Listing</h1>
+  <p class="subtitle">Create a Room, Tour or Service. Upload a photo so it appears on the public listings and dashboard.</p>
+
+  <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">{{ form.property.label }}</label>
+        {{ form.property }}
+        {% if form.property.errors %}<div class="text-danger small">{{ form.property.errors }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">{{ form.resource_type.label }}</label>
+        {{ form.resource_type }}
+        {% if form.resource_type.errors %}<div class="text-danger small">{{ form.resource_type.errors }}</div>{% endif %}
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">{{ form.name.label }}</label>
+        {{ form.name }}
+        {% if form.name.errors %}<div class="text-danger small">{{ form.name.errors }}</div>{% endif %}
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">{{ form.description.label }}</label>
+        {{ form.description }}
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">{{ form.capacity.label }}</label>
+        {{ form.capacity }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">{{ form.base_price.label }}</label>
+        {{ form.base_price }}
+      </div>
+      <div class="col-md-4 d-flex align-items-end gap-3">
+        <div class="form-check">
+          {{ form.is_active }}
+          <label class="form-check-label" for="{{ form.is_active.id_for_label }}">Active</label>
+        </div>
+        <div class="form-check">
+          {{ form.is_featured }}
+          <label class="form-check-label" for="{{ form.is_featured.id_for_label }}">Featured</label>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">{{ form.image.label }}</label>
+        {{ form.image }}
+        <div class="preview-box mt-2" id="image-preview">
+          <span>Image preview will appear here</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-success px-4">Save Listing</button>
+      <a href="{% url 'booking_app:staff_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Live image preview
+  const input = document.querySelector('input[type="file"]');
+  const preview = document.getElementById("image-preview");
+  if (input) {
+    input.addEventListener("change", () => {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+</script>
+{% endblock %}

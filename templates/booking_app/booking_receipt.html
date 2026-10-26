@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Receipt — {{ booking.reference }}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; color: #16261f; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0f6d5c; padding-bottom: 1rem; }
+    .header h1 { font-size: 1.4rem; margin: 0; color: #0f6d5c; }
+    .meta { margin: 1.5rem 0; font-size: 0.95rem; }
+    .meta dt { font-weight: 600; color: #3d4f47; }
+    .meta dd { margin: 0 0 0.6rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+    th, td { text-align: left; padding: 0.6rem 0.4rem; border-bottom: 1px solid #e4ddcd; }
+    th { font-size: 0.8rem; text-transform: uppercase; color: #3d4f47; }
+    .total { font-size: 1.15rem; font-weight: 700; }
+    .footer { margin-top: 2rem; font-size: 0.8rem; color: #6b7280; text-align: center; }
+    @media print {
+      .no-print { display: none; }
+      body { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>Tourism Booking</h1>
+      <small>Official receipt</small>
+    </div>
+    <div style="text-align:right;">
+      <strong>{{ booking.reference }}</strong><br>
+      <small>{{ booking.updated_at|date:"M d, Y H:i" }}</small>
+    </div>
+  </div>
+
+  <dl class="meta">
+    <dt>Guest</dt>
+    <dd>{{ booking.customer.get_full_name|default:booking.customer.username }}</dd>
+    <dt>Resource</dt>
+    <dd>{{ booking.resource.name }} — {{ booking.resource.property.name }}, {{ booking.resource.property.destination.name }}</dd>
+    <dt>Stay / Period</dt>
+    <dd>{{ booking.start_datetime|date:"M d, Y H:i" }} → {{ booking.end_datetime|date:"M d, Y H:i" }}</dd>
+    <dt>Guests</dt>
+    <dd>{{ booking.guests }}</dd>
+    <dt>Status</dt>
+    <dd>{{ booking.get_status_display }}</dd>
+  </dl>
+
+  <table>
+    <thead>
+      <tr><th>Description</th><th>Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ booking.resource.get_resource_type_display }} — {{ booking.resource.name }}</td>
+        <td>KES {{ booking.resource.base_price }}</td>
+      </tr>
+      {% if booking.payment %}
+      <tr>
+        <td>Payment ({{ booking.payment.get_method_display }})
+          {% if booking.payment.mpesa_receipt_number %}
+            — M-Pesa #{{ booking.payment.mpesa_receipt_number }}
+          {% endif %}
+        </td>
+        <td>KES {{ booking.payment.amount }}</td>
+      </tr>
+      {% endif %}
+      <tr class="total">
+        <td>Total paid</td>
+        <td>KES {% if booking.payment %}{{ booking.payment.amount }}{% else %}{{ booking.resource.base_price }}{% endif %}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="footer">
+    This is a system-generated receipt. Verify anytime at the booking portal with reference <strong>{{ booking.reference }}</strong>.
+  </p>
+
+  <p class="no-print" style="text-align:center;margin-top:2rem;">
+    <button onclick="window.print()" style="padding:0.6rem 1.4rem;background:#0f6d5c;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;">
+      Print / Save as PDF
+    </button>
+    <a href="{% url 'booking_app:customer_dashboard' %}" style="margin-left:1rem;">Back to dashboard</a>
+  </p>
+</body>
+</html>

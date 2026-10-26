@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Verify a Booking</h2>
+  <form method="get">
+    <input type="text" name="reference" value="{{ reference }}" placeholder="TRV-2026-XXXXX" class="form-control">
+    <button type="submit" class="btn btn-primary mt-2">Verify</button>
+  </form>
+  {% if reference %}
+    {% if booking %}
+      <div class="alert alert-success mt-3">
+        VERIFIED RESERVATION — {{ booking.reference }}<br>
+        Status: {{ booking.get_status_display }}<br>
+        Service: {{ booking.resource.name }}<br>
+        Date: {{ booking.start_datetime }} → {{ booking.end_datetime }}<br>
+        Guests: {{ booking.guests }}
+      </div>
+    {% else %}
+      <div class="alert alert-warning mt-3">No booking found for that reference.</div>
+    {% endif %}
+  {% endif %}
+{% endblock %}

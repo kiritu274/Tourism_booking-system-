@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ resource.name }} — Tourism Booking{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-8">
+      <span class="tb-eyebrow">{{ resource.property.destination.name }}</span>
+      <h2 class="display-font">{{ resource.name }}</h2>
+      <p class="text-muted">{{ resource.property.name }} · Sleeps {{ resource.capacity }}</p>
+      {% if resource.is_featured %}<span class="tb-badge-featured mb-3 d-inline-block">Featured</span>{% endif %}
+      <p>{{ resource.description|default:"No description provided yet." }}</p>
+    </div>
+    <div class="col-md-4">
+      <div class="tb-card p-4">
+        <span class="tb-price-tag mb-3 d-inline-block">KES {{ resource.base_price }}</span>
+        <p class="text-muted small">Payment via M-Pesa is required to confirm any reservation — your slot is held while you complete payment.</p>
+        <a href="{% url 'booking_app:booking_create' resource.pk %}" class="btn btn-tb-accent w-100">Reserve</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

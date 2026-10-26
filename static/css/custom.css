@@ -1,0 +1,545 @@
+/*
+  custom.css — Tourism Booking Integrity System visual identity.
+
+  Deliberately not the default Bootstrap look (brief §18: "Do NOT make
+  it look like a generic Bootstrap template"). One restrained palette
+  (deep forest/teal for trust + warm cream/gold for a tourism feel),
+  one accent gradient used exactly once (hero backdrop) rather than
+  scattered throughout (brief: "Do NOT overuse gradients"), and a serif
+  display face paired with a plain-text sans body for an editorial,
+  premium tone rather than a generic dashboard tone.
+*/
+/* ---------------------------------------------------------------------
+   Floating WhatsApp button
+--------------------------------------------------------------------- */
+.tb-whatsapp-float {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1050;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.45);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tb-whatsapp-float:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.55);
+  color: #fff;
+}
+.tb-whatsapp-float svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+@media (max-width: 575.98px) {
+  .tb-whatsapp-float {
+    bottom: 1rem;
+    right: 1rem;
+    width: 50px;
+    height: 50px;
+  }
+  .tb-whatsapp-float svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+:root {
+  --color-ink: #16261f;
+  --color-ink-soft: #3d4f47;
+  --color-canvas: #faf7f0;
+  --color-canvas-alt: #f1ede2;
+  --color-accent: #0f6d5c;
+  --color-accent-dark: #0b4f43;
+  --color-accent-light: #e5f1ee;
+  --color-gold: #c98f3f;
+  --color-gold-light: #f6ead4;
+  --color-danger: #b3452f;
+  --color-border: #e4ddcd;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --radius: 14px;
+  --shadow-soft: 0 2px 10px rgba(22, 38, 31, 0.06);
+  --shadow-lift: 0 14px 30px rgba(22, 38, 31, 0.14);
+}
+
+/* ---------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------- */
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .display-font {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+a {
+  transition: color 0.15s ease;
+}
+
+/* ---------------------------------------------------------------------
+/* ---------------------------------------------------------------------
+   Navbar — sticky
+--------------------------------------------------------------------- */
+.tb-navbar {
+  background: var(--color-ink);
+  padding: 0.9rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  box-shadow: 0 2px 12px rgba(22, 38, 31, 0.18);
+}
+.tb-navbar .navbar-brand {
+  font-family: var(--font-display);
+  color: var(--color-canvas) !important;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.tb-navbar .nav-link {
+  color: rgba(250, 247, 240, 0.78) !important;
+  font-size: 0.92rem;
+  padding: 0.4rem 0.85rem !important;
+  transition: color 0.15s ease;
+}
+.tb-navbar .nav-link:hover {
+  color: var(--color-gold) !important;
+}
+.tb-navbar .nav-link.tb-user {
+  color: var(--color-gold) !important;
+}
+
+/* Logout button inside navbar should match nav-link colour on hover */
+.tb-navbar form button.nav-link:hover {
+  color: var(--color-gold) !important;
+}
+/* ---------------------------------------------------------------------
+/* ---------------------------------------------------------------------
+   Hero — video background
+--------------------------------------------------------------------- */
+.tb-hero {
+  position: relative;
+  color: var(--color-canvas);
+  padding: 4.5rem 0 7rem;
+  overflow: hidden;
+  /* fallback colour while video loads */
+  background: var(--color-accent-dark);
+}
+
+.tb-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.tb-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* dark overlay so white text stays readable */
+  background: linear-gradient(
+    160deg,
+    rgba(11, 79, 67, 0.72) 0%,
+    rgba(15, 109, 92, 0.55) 100%
+  );
+}
+
+.tb-hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.tb-hero h1 {
+  font-size: clamp(2.1rem, 4vw, 3.2rem);
+  font-weight: 600;
+  max-width: 720px;
+  line-height: 1.2;
+}
+
+.tb-hero p.lead {
+  color: rgba(250, 247, 240, 0.92);
+  max-width: 560px;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+@media (max-width: 767.98px) {
+  .tb-hero {
+    padding: 3.25rem 0 5.5rem;
+  }
+  .tb-hero h1 {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+  }
+}
+/* Floating search card, pulled up over the hero's bottom edge */
+.tb-search-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  padding: 1.5rem;
+  margin-top: -3.75rem;
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+.tb-search-card label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-soft);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+.tb-search-card .form-control,
+.tb-search-card .form-select {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.tb-search-card .form-control:focus,
+.tb-search-card .form-select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+  outline: none;
+}
+
+/* Buttons */
+.btn-tb-accent {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.65rem 1.25rem;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.btn-tb-accent:hover {
+  background: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.btn-tb-outline {
+  border: 1.5px solid var(--color-accent);
+  color: var(--color-accent);
+  font-weight: 600;
+  background: transparent;
+  border-radius: 8px;
+  padding: 0.55rem 1.15rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.btn-tb-outline:hover {
+  background: var(--color-accent-light);
+  color: var(--color-accent-dark);
+}
+
+/* ---------------------------------------------------------------------
+   Section headers
+--------------------------------------------------------------------- */
+.tb-section {
+  padding: 4rem 0;
+}
+.tb-eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  margin-bottom: 0.5rem;
+}
+.tb-section h2 {
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  margin-bottom: 0.4rem;
+}
+.tb-section p.tb-sub {
+  color: var(--color-ink-soft);
+  max-width: 560px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* ---------------------------------------------------------------------
+   Cards — destinations, listings, categories
+--------------------------------------------------------------------- */
+.tb-card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  height: 100%;
+}
+.tb-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+}
+
+/* Media area — works for both real images and emoji fallbacks */
+.tb-card-media {
+  aspect-ratio: 16 / 10;
+  height: auto;
+  min-height: 160px;
+  overflow: hidden;
+  background: var(--color-accent-light);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  color: var(--color-accent);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+/* Real uploaded photos fill the media area */
+.tb-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.tb-card:hover .tb-card-media img {
+  transform: scale(1.05);
+}
+
+/* Category / destination images (homepage etc.) */
+.tb-category-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.tb-card:hover .tb-category-img {
+  transform: scale(1.05);
+}
+
+.tb-card-body {
+  padding: 1.1rem 1.2rem 1.3rem;
+}
+.tb-card-body h5 {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+}
+.tb-price-tag {
+  display: inline-block;
+  background: var(--color-gold-light);
+  color: #7a5722;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+.tb-badge-featured {
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+}
+
+/* Featured listing price + button row */
+.tb-card-body .d-flex.justify-content-between {
+  margin-top: 0.75rem;
+}
+
+/* ---------------------------------------------------------------------
+   "Why Your Booking Is Different" — brief §19
+--------------------------------------------------------------------- */
+.tb-diff-card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  height: 100%;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: tb-fade-up 0.5s ease forwards;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tb-diff-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+}
+.tb-diff-card .tb-check {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.tb-diff-card h5 {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+.tb-diff-card p {
+  font-size: 0.88rem;
+  color: var(--color-ink-soft);
+  margin-bottom: 0;
+  line-height: 1.55;
+}
+
+@keyframes tb-fade-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tb-diff-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .tb-card {
+    transition: none;
+  }
+  .btn-tb-accent:hover {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Reliability strip
+--------------------------------------------------------------------- */
+.tb-reliability {
+  background: var(--color-canvas-alt);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 2.5rem 0;
+}
+.tb-reliability .tb-stat {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  color: var(--color-accent-dark);
+  font-weight: 600;
+  line-height: 1.15;
+}
+.tb-reliability .tb-stat-label {
+  font-size: 0.82rem;
+  color: var(--color-ink-soft);
+  margin-top: 0.3rem;
+  letter-spacing: 0.01em;
+}
+
+/* ---------------------------------------------------------------------
+   Why choose us checklist card
+--------------------------------------------------------------------- */
+.tb-card.p-4 h5 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-accent-dark);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 0;
+}
+.tb-card.p-4 h5:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* ---------------------------------------------------------------------
+   Toast notifications (brief §18)
+--------------------------------------------------------------------- */
+.tb-toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1080;
+}
+.toast {
+  border: none;
+  box-shadow: var(--shadow-lift);
+  border-radius: 10px;
+}
+.toast.text-bg-success { background: var(--color-accent) !important; }
+.toast.text-bg-danger { background: var(--color-danger) !important; }
+.toast.text-bg-info { background: var(--color-ink-soft) !important; }
+.toast.text-bg-warning { background: var(--color-gold) !important; color: var(--color-ink) !important; }
+
+/* ---------------------------------------------------------------------
+   Empty state
+--------------------------------------------------------------------- */
+.tb-empty {
+  text-align: center;
+  padding: 3.5rem 1rem;
+  color: var(--color-ink-soft);
+}
+.tb-empty .tb-empty-icon {
+  font-size: 2.4rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-border);
+}
+
+/* ---------------------------------------------------------------------
+   Responsive refinements
+--------------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+  .tb-hero {
+    padding: 3.25rem 0 5.5rem;
+  }
+  .tb-hero h1 {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+  }
+  .tb-search-card {
+    margin-top: -2.75rem;
+    padding: 1.15rem;
+  }
+  .tb-section {
+    padding: 3rem 0;
+  }
+  .tb-card-media {
+    font-size: 1.9rem;
+  }
+  .tb-reliability .tb-stat {
+    font-size: 1.55rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .tb-search-card .col-md-1.d-grid {
+    margin-top: 0.5rem;
+  }
+}

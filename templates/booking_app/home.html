@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Tourism Booking — Book With Confidence{% endblock %}
+
+{% block full_width_content %}
+
+   <!-- ===================== HERO + SEARCH ===================== -->
+  <section class="tb-hero">
+    <!-- Background video -->
+    <video class="tb-hero-video" autoplay muted loop playsinline poster="{% static 'images/hero-poster.jpg' %}">
+      <source src="{% static 'videos/kkj.mp4' %}" type="video/mp4">
+      <!-- Optional WebM for smaller size / better support -->
+      {# <source src="{% static 'videos/hero.webm' %}" type="video/webm"> #}
+    </video>
+    <div class="tb-hero-overlay"></div>
+
+    <div class="container">
+      <span class="tb-eyebrow" style="color:#f6ead4;">Verified reservations, every time</span>
+      <h1 class="mt-2 mb-3">Book with confidence.<br>Every reservation is validated, synchronized and accountable.</h1>
+      <p class="lead">No double bookings. No disappearing reservations. Just tourism experiences you can actually rely on.</p>
+    </div>
+
+    <div class="container">
+      <form method="get" action="{% url 'booking_app:listing_list' %}" class="tb-search-card row g-3 align-items-end">
+        <div class="col-md-4">
+          <label for="q">Destination or service</label>
+          <input type="text" name="q" id="q" class="form-control" placeholder="e.g. Diani Beach, Room 204…">
+        </div>
+        <div class="col-md-3">
+          <label for="start_date">Check-in</label>
+          <input type="date" name="start_date" id="start_date" class="form-control">
+        </div>
+        <div class="col-md-3">
+          <label for="end_date">Check-out</label>
+          <input type="date" name="end_date" id="end_date" class="form-control">
+        </div>
+        <div class="col-md-1">
+          <label for="guests">Guests</label>
+          <input type="number" name="guests" id="guests" min="1" value="1" class="form-control">
+        </div>
+        <div class="col-md-1 d-grid">
+          <button type="submit" class="btn btn-tb-accent">Search</button>
+        </div>
+      </form>
+    </div>
+  </section>
+  <!-- ===================== BROWSE CATEGORIES ===================== -->
+  <section class="tb-section">
+    <div class="container">
+      <span class="tb-eyebrow">Browse</span>
+      <h2 class="display-font">What are you looking for?</h2>
+      <div class="row g-3 mt-2">
+        <div class="col-6 col-md-4">
+          <a href="{% url 'booking_app:listing_list' %}?type=room" class="tb-card d-block text-decoration-none text-reset">
+            <div class="tb-card-media">
+              <img src="{% static 'images/img.png' %}" alt="Rooms" class="tb-category-img">
+            </div>
+            <div class="tb-card-body">
+              <h5>Rooms</h5>
+              <p class="mb-0 text-muted small">Hotels &amp; resort stays</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-6 col-md-4">
+          <a href="{% url 'booking_app:listing_list' %}?type=tour" class="tb-card d-block text-decoration-none text-reset">
+            <div class="tb-card-media">
+              <img src="{% static 'images/img_1.png' %}" alt="Tours" class="tb-category-img">
+            </div>
+            <div class="tb-card-body">
+              <h5>Tours</h5>
+              <p class="mb-0 text-muted small">Guided experiences</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-6 col-md-4">
+          <a href="{% url 'booking_app:listing_list' %}?type=service" class="tb-card d-block text-decoration-none text-reset">
+            <div class="tb-card-media">
+              <img src="{% static 'images/img_2.png' %}" alt="Services" class="tb-category-img">
+            </div>
+            <div class="tb-card-body">
+              <h5>Services</h5>
+              <p class="mb-0 text-muted small">Add-ons &amp; experiences</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== POPULAR DESTINATIONS ===================== -->
+  {% if destinations %}
+  <section class="tb-section pt-0">
+    <div class="container">
+      <span class="tb-eyebrow">Popular</span>
+      <h2 class="display-font">Popular destinations</h2>
+      <div class="row g-3 mt-2">
+        {% for destination in destinations %}
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="{% url 'booking_app:listing_list' %}?q={{ destination.name|urlencode }}"
+               class="tb-card d-block text-decoration-none text-reset">
+              <div class="tb-card-media"></div>
+              <div class="tb-card-body">
+                <h5 style="font-size:0.95rem;">{{ destination.name }}</h5>
+                <p class="mb-0 text-muted small">{{ destination.country }}</p>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ===================== FEATURED LISTINGS ===================== -->
+  {% if featured_resources %}
+  <section class="tb-section pt-0">
+    <div class="container">
+      <span class="tb-eyebrow">Featured</span>
+      <h2 class="display-font">Featured accommodations &amp; tours</h2>
+      <div class="row g-3 mt-2">
+        {% for resource in featured_resources %}
+          <div class="col-md-4">
+            <div class="tb-card">
+              <div class="tb-card-media">
+                {% if resource.image %}
+                  <img src="{{ resource.image.url }}" alt="{{ resource.name }}">
+                {% else %}
+                  {% if resource.resource_type == "room" %}
+                  {% elif resource.resource_type == "tour" %}
+                  {% else %}{% endif %}
+                {% endif %}
+              </div>
+              <div class="tb-card-body">
+                {% if resource.is_featured %}
+                  <span class="tb-badge-featured mb-2 d-inline-block">Featured</span>
+                {% endif %}
+                <h5>{{ resource.name }}</h5>
+                <p class="text-muted small mb-2">
+                  {{ resource.property.name }} · {{ resource.property.destination.name }}
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="tb-price-tag">KES {{ resource.base_price }}</span>
+                  <a href="{% url 'booking_app:listing_detail' resource.pk %}" class="btn btn-tb-outline btn-sm">View</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ===================== WHY YOUR BOOKING IS DIFFERENT ===================== -->
+  <section class="tb-section" style="background:var(--color-canvas-alt);">
+    <div class="container">
+      <span class="tb-eyebrow">Why your booking is different</span>
+      <h2 class="display-font">Built to solve the problems ordinary booking sites ignore</h2>
+      <p class="tb-sub">Every reservation here passes through a dedicated integrity engine before it's ever confirmed.</p>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-4">
+          <div class="tb-diff-card">
+            <div class="tb-check">✓</div>
+            <h5>Duplicate Protection</h5>
+            <p>Server-side checks and database constraints make it impossible to double-book the same room or slot — even under simultaneous requests.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="tb-diff-card">
+            <div class="tb-check">✓</div>
+            <h5>Real-Time Availability</h5>
+            <p>Staff dashboards update the instant a booking is made — no stale views, no manual refreshing to see what's actually available.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="tb-diff-card">
+            <div class="tb-check">✓</div>
+            <h5>Verified Reservations</h5>
+            <p>Every confirmed booking is checked against the live database — verify yours anytime with just your reference number.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="tb-diff-card">
+            <div class="tb-check">✓</div>
+            <h5>Transparent Booking History</h5>
+            <p>A full timeline — created, verified, confirmed — is attached to every reservation, visible to you from the moment you book.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="tb-diff-card">
+            <div class="tb-check">✓</div>
+            <h5>Secure Staff Access</h5>
+            <p>Role-based permissions mean only authorized staff and managers can view or modify bookings — every action is logged.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="tb-diff-card">
+            <div class="tb-check">✓</div>
+            <h5>Real-Time Management</h5>
+            <p>Managers see conflicts, cancellations, and system health as they happen — not in a report generated hours later.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BOOKING RELIABILITY STRIP ===================== -->
+  <section class="tb-reliability py-4">
+    <div class="container">
+      <div class="row text-center g-3">
+        <div class="col-6 col-md-3">
+          <div class="tb-stat">0</div>
+          <div class="tb-stat-label">Duplicate reservations possible</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="tb-stat">100%</div>
+          <div class="tb-stat-label">Bookings server-side validated</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="tb-stat">Live</div>
+          <div class="tb-stat-label">Staff dashboard synchronization</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="tb-stat">Full</div>
+          <div class="tb-stat-label">Audit trail on every change</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHY CHOOSE US ===================== -->
+  <section class="tb-section">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-md-6">
+          <span class="tb-eyebrow">Why choose us</span>
+          <h2 class="display-font">A booking platform built around one idea: trust</h2>
+          <p class="tb-sub">
+            Most booking problems — a room sold twice, a reservation that quietly vanished, a schedule
+            nobody updated — come down to the same root cause: nothing actually checked. Ours does,
+            every time, before your reservation is ever confirmed.
+          </p>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="{% url 'booking_app:booking_verify' %}" class="btn btn-tb-accent">Verify a booking</a>
+            <a href="{% url 'booking_app:listing_list' %}" class="btn btn-tb-outline">Browse listings</a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="tb-card p-4">
+            <h5>✓ Reservation Created</h5>
+            <h5>✓ Availability Verified</h5>
+            <h5>✓ Duplicate Check Passed</h5>
+            <h5>✓ Reservation Secured</h5>
+            <h5 class="mb-0">✓ Confirmation Generated</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <h2 class="mb-3">Pay for {{ booking.reference }}</h2>
+      <p class="text-muted">{{ booking.resource.name }} — KES {{ booking.resource.base_price }}</p>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">M-Pesa phone number</label>
+          <input type="tel" name="phone_number" class="form-control" placeholder="2547XXXXXXXX" required>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Pay with M-Pesa</button>
+      </form>
+      <p class="text-muted mt-3 small">You'll get an STK push prompt on your phone — enter your M-Pesa PIN there to complete payment.</p>
+    </div>
+  </div>
+{% endblock %}

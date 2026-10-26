@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Booking {{ booking.reference }}</h2>
+  <p>Status: <strong>{{ booking.get_status_display }}</strong></p>
+
+  {% if booking.status == "payment_pending" %}
+    <a href="{% url 'booking_app:booking_pay' booking.reference %}" class="btn btn-success mb-3">Pay with M-Pesa</a>
+  {% elif booking.status == "confirmed" and booking.payment %}
+    <div class="alert alert-success">
+      Paid — M-Pesa receipt {{ booking.payment.mpesa_receipt_number }}
+    </div>
+  {% endif %}
+
+  <h3>Timeline</h3>
+  <ul>
+    {% for entry in timeline %}
+      <li>{{ entry.timestamp }} — {{ entry.new_status }} ({{ entry.note }})</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

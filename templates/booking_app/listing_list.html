@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Listings — Tourism Booking{% endblock %}
+{% block content %}
+  <div class="mb-4">
+    <span class="tb-eyebrow">{% if is_filtered %}Search results{% else %}All listings{% endif %}</span>
+    <h2 class="display-font mb-0">
+      {% if is_filtered %}{{ page_obj.paginator.count|default:resources|length }} listing{{ resources|length|pluralize }} found{% else %}Browse listings{% endif %}
+    </h2>
+  </div>
+
+  <form method="get" class="tb-search-card row g-2 align-items-end mb-4" style="margin-top:0;">
+    <div class="col-md-4">
+      <label for="q">Destination or service</label>
+      <input type="text" name="q" id="q" value="{{ query }}" class="form-control" placeholder="Search…">
+    </div>
+    <div class="col-md-3">
+      <label for="start_date">Check-in</label>
+      <input type="date" name="start_date" id="start_date" value="{{ start_date }}" class="form-control">
+    </div>
+    <div class="col-md-3">
+      <label for="end_date">Check-out</label>
+      <input type="date" name="end_date" id="end_date" value="{{ end_date }}" class="form-control">
+    </div>
+    <div class="col-md-1">
+      <label for="guests">Guests</label>
+      <input type="number" name="guests" id="guests" min="1" value="{{ guests }}" class="form-control">
+    </div>
+    <div class="col-md-1 d-grid">
+      <button type="submit" class="btn btn-tb-accent">Search</button>
+    </div>
+  </form>
+
+  {% if resources %}
+    <div class="row g-3">
+      {% for resource in resources %}
+        <div class="col-md-4">
+          <div class="tb-card">
+            <div class="tb-card-media">
+              {% if resource.image %}
+                <img src="{{ resource.image.url }}" alt="{{ resource.name }}"
+                     style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+              {% else %}
+                {% if resource.resource_type == "room" %}
+                {% elif resource.resource_type == "tour" %}
+                {% else %}{% endif %}
+              {% endif %}
+            </div>
+            <div class="tb-card-body">
+              {% if resource.is_featured %}<span class="tb-badge-featured mb-2 d-inline-block">Featured</span>{% endif %}
+              <h5>{{ resource.name }}</h5>
+              <p class="text-muted small mb-2">
+                {{ resource.property.name }} · {{ resource.property.destination.name }} · Sleeps {{ resource.capacity }}
+              </p>
+              <span class="tb-price-tag">KES {{ resource.base_price }}</span>
+              <a href="{% url 'booking_app:listing_detail' resource.pk %}" class="btn btn-tb-outline btn-sm float-end">View</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+      <nav class="mt-4">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link"
+                 href="?page={{ page_obj.previous_page_number }}&q={{ query }}&guests={{ guests }}&start_date={{ start_date }}&end_date={{ end_date }}">
+                Previous
+              </a>
+            </li>
+          {% endif %}
+          <li class="page-item disabled">
+            <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+          </li>
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link"
+                 href="?page={{ page_obj.next_page_number }}&q={{ query }}&guests={{ guests }}&start_date={{ start_date }}&end_date={{ end_date }}">
+                Next
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  {% else %}
+    <div class="tb-empty">
+      <div class="tb-empty-icon"></div>
+      {% if is_filtered %}
+        <h5>No listings match your search</h5>
+        <p>Try a different destination, wider dates, or fewer guests.</p>
+      {% else %}
+        <h5>No listings available yet</h5>
+        <p>Check back soon, or ask a manager to add one via the admin.</p>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}

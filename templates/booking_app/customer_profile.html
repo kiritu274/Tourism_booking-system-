@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile — Tourism Booking{% endblock %}
+
+{% block content %}
+<div style="max-width:520px;margin:0 auto;">
+  <h1 class="display-font mb-1" style="font-size:1.5rem;">Edit Profile</h1>
+  <p class="text-muted mb-4">Update your personal details.</p>
+
+  <form method="post" class="tb-card p-4">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-3">
+        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}
+      </div>
+    {% endfor %}
+    <div class="d-flex gap-2 mt-3">
+      <button type="submit" class="btn btn-tb-accent">Save changes</button>
+      <a href="{% url 'booking_app:customer_dashboard' %}" class="btn btn-tb-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

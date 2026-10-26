@@ -1,0 +1,857 @@
+{% extends "base.html" %}
+{% block title %}Staff Analytics Dashboard{% endblock %}
+
+{% block content %}
+<style>
+  :root {
+    --sidebar-bg: #0f1a14;
+    --sidebar-hover: #1a2e24;
+    --accent: #22c55e;
+    --card-bg: #ffffff;
+    --page-bg: #f0f7f3;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+  }
+
+  /* Full-bleed shell – removes white side gutters */
+  .analytics-shell {
+    display: flex !important;
+    height: calc(100vh - 56px);
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: -1.5rem 0 0 !important;
+    margin-left: calc(-50vw + 50%) !important;
+    margin-right: calc(-50vw + 50%) !important;
+    background: var(--page-bg);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Sidebar ─────────────────────────────────────────── */
+  .dash-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--sidebar-bg);
+    color: #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0.6rem;
+    height: 100%;
+    overflow-y: auto;
+  }
+  .dash-sidebar .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.4rem 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+  }
+  .dash-sidebar .brand .logo-mark {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    font-size: 0.85rem;
+    color: #fff;
+  }
+  .dash-sidebar .workspace {
+    background: #1a2e24;
+    border-radius: 10px;
+    padding: 0.55rem 0.75rem;
+    margin: 0 0.4rem 1rem;
+    font-size: 0.82rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .dash-sidebar .workspace .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .dash-sidebar .nav-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    padding: 0.6rem 0.8rem 0.3rem;
+  }
+
+  .dash-sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 0.8rem;
+    margin: 0.08rem 0.3rem;
+    border-radius: 10px;
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .dash-sidebar nav a:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+  }
+  .dash-sidebar nav a.active {
+    background: linear-gradient(90deg, #166534, #15803d);
+    color: #fff;
+    font-weight: 600;
+  }
+  .dash-sidebar nav a .badge-new {
+    margin-left: auto;
+    background: var(--accent);
+    color: #052e16;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 0.12rem 0.35rem;
+    border-radius: 6px;
+  }
+
+  .dash-sidebar .user-card {
+    margin-top: auto;
+    padding: 0.75rem 0.6rem;
+    border-top: 1px solid #1f2e26;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .dash-sidebar .user-card .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #22c55e, #0d9488);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.8rem;
+  }
+  .dash-sidebar .user-card .meta {
+    line-height: 1.2;
+  }
+  .dash-sidebar .user-card .meta strong {
+    color: #fff;
+    font-size: 0.85rem;
+    display: block;
+  }
+  .dash-sidebar .user-card .meta span {
+    color: #9ca3af;
+    font-size: 0.72rem;
+  }
+
+  /* ── Main ────────────────────────────────────────────── */
+  .dash-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+  .dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    flex-shrink: 0;
+  }
+  .dash-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+  .dash-header .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  #connection-indicator {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  /* Section wrappers */
+  .dash-section {
+    margin-bottom: 1.75rem;
+    scroll-margin-top: 1rem;
+  }
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .section-title .icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: #dcfce7;
+    display: grid;
+    place-items: center;
+    color: #166534;
+    font-size: 0.8rem;
+  }
+
+  /* ── Metric cards ────────────────────────────────────── */
+  .metric-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .metric-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .metric-card.dark {
+    background: linear-gradient(145deg, #0f1a14 0%, #14532d 100%);
+    color: #fff;
+    border: none;
+  }
+  .metric-card .label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+  }
+  .metric-card.dark .label {
+    color: #86efac;
+  }
+  .metric-card .value {
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .metric-card .delta {
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
+  }
+  .metric-card .delta.up {
+    color: #16a34a;
+  }
+  .metric-card .delta.down {
+    color: #dc2626;
+  }
+  .metric-card.dark .delta {
+    color: #86efac;
+  }
+  .metric-card .spark {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    width: 80px;
+    height: 34px;
+    opacity: 0.85;
+  }
+
+  /* ── Panels ──────────────────────────────────────────── */
+  .mid-row {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 1rem;
+  }
+  .panel {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.85rem;
+    flex-shrink: 0;
+  }
+  .panel-header h3 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin: 0;
+    color: #111827;
+  }
+  .panel-header select {
+    font-size: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.22rem 0.45rem;
+    background: #f9fafb;
+  }
+  .big-stat {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #111827;
+  }
+  .big-stat .unit {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .stat-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-top: 0.9rem;
+  }
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #f0fdf4;
+    border-radius: 10px;
+    padding: 0.55rem 0.75rem;
+  }
+  .stat-pill .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: #dcfce7;
+    display: grid;
+    place-items: center;
+    color: #166534;
+    font-size: 0.95rem;
+  }
+  .stat-pill .text strong {
+    display: block;
+    font-size: 0.85rem;
+  }
+  .stat-pill .text span {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  /* Chart containers */
+  #bookingsChart,
+  #statusChart {
+    width: 100% !important;
+    max-height: 200px;
+  }
+
+  /* ── Table ───────────────────────────────────────────── */
+  .table-panel table {
+    width: 100%;
+    font-size: 0.83rem;
+    border-collapse: collapse;
+  }
+  .table-panel th {
+    text-align: left;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 0.45rem 0.35rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .table-panel td {
+    padding: 0.55rem 0.35rem;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+  }
+  .table-panel tr:last-child td {
+    border-bottom: none;
+  }
+  .status-chip {
+    display: inline-block;
+    padding: 0.18rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+  .status-chip.confirmed {
+    background: #dcfce7;
+    color: #166534;
+  }
+  .status-chip.pending,
+  .status-chip.payment_pending {
+    background: #fef9c3;
+    color: #854d0e;
+  }
+  .status-chip.cancelled,
+  .status-chip.expired {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  .status-chip.completed {
+    background: #e0e7ff;
+    color: #3730a3;
+  }
+  .status-chip.conflict {
+    background: #ffedd5;
+    color: #9a3412;
+  }
+
+  .highlight-row {
+    animation: flash 2s ease;
+  }
+  @keyframes flash {
+    0% {
+      background: #fef08a;
+    }
+    100% {
+      background: transparent;
+    }
+  }
+
+  /* ── Status card ─────────────────────────────────────── */
+  .map-card {
+    background: linear-gradient(160deg, #0f1a14 0%, #14532d 60%, #166534 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 1.1rem 1.2rem;
+    max-width: 380px;
+  }
+  .map-card h3 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin: 0 0 0.85rem;
+    color: #fff;
+  }
+  .map-card .region-stat {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 11px;
+    padding: 0.75rem 0.9rem;
+    margin-top: 0.9rem;
+  }
+  .map-card .region-stat .pct {
+    font-size: 1.65rem;
+    font-weight: 700;
+  }
+  .map-card .region-stat .lbl {
+    font-size: 0.78rem;
+    opacity: 0.85;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .metric-row {
+      grid-template-columns: 1fr;
+    }
+    .mid-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 768px) {
+    .analytics-shell {
+      flex-direction: column;
+      height: auto;
+      overflow: visible;
+      width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    .dash-sidebar {
+      width: 100%;
+      height: auto;
+      max-height: none;
+    }
+    .dash-main {
+      overflow: visible;
+    }
+  }
+</style>
+
+<div class="analytics-shell">
+
+  <!-- ════════════ SIDEBAR ════════════ -->
+  <aside class="dash-sidebar">
+    <div class="brand">
+      <div class="logo-mark">TB</div>
+    </div>
+
+    <div class="workspace">
+      <span class="dot"></span>
+      Staff Workspace
+    </div>
+
+    <div class="nav-label">Sections</div>
+    <nav id="section-nav">
+      <a href="#section-overview" class="nav-link active" data-section="section-overview">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Overview
+      </a>
+      <a href="#section-trends" class="nav-link" data-section="section-trends">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>
+        Trends
+      </a>
+      <a href="#section-live" class="nav-link" data-section="section-live">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        Live Bookings
+      </a>
+      <a href="#section-status" class="nav-link" data-section="section-status">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Status Breakdown
+      </a>
+        <a href="{% url 'booking_app:resource_create' %}">
+  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path d="M12 5v14M5 12h14"/>
+  </svg>
+  Add Listing
+</a>
+    </nav>
+
+    <div class="nav-label" style="margin-top:1rem;">Pages</div>
+    <nav>
+      <a href="{% url 'booking_app:listing_list' %}">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>
+        Listings
+      </a>
+      <a href="#">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        Team
+      </a>
+      <a href="#">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        Reports
+        <span class="badge-new">NEW</span>
+      </a>
+      <a href="#">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </a>
+    </nav>
+
+    <div class="user-card">
+      <div class="avatar">{{ request.user.first_name|first|default:request.user.username|first|upper }}</div>
+      <div class="meta">
+        <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+        <span>{{ request.user.get_role_display }}</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════════════ MAIN ════════════ -->
+  <main class="dash-main">
+    <div class="dash-header">
+      <h1>Dashboard</h1>
+      <div class="actions">
+        <span id="connection-indicator" class="badge bg-secondary">Connecting…</span>
+        <button class="btn btn-sm btn-success rounded-pill px-3" type="button">
+          + Add Custom Widget
+        </button>
+      </div>
+    </div>
+
+    <!-- ════ SECTION 1: Overview ════ -->
+    <section id="section-overview" class="dash-section">
+      <h2 class="section-title">
+        <span class="icon"></span>
+        Overview
+      </h2>
+      <div class="metric-row">
+        <div class="metric-card dark">
+          <div class="label">Active Bookings</div>
+          <div class="value">{{ metrics.active_bookings }}</div>
+          <div class="delta">
+            {% if metrics.active_delta >= 0 %}↑{% else %}↓{% endif %}
+            {{ metrics.active_delta|floatformat:1 }}% vs last 7 days
+          </div>
+          <canvas class="spark" id="sparkActive" width="90" height="40"></canvas>
+        </div>
+
+        <div class="metric-card">
+          <div class="label">Confirmation Rate</div>
+          <div class="value">{{ metrics.confirmation_rate }}<span style="font-size:1rem;font-weight:500;color:#6b7280">%</span></div>
+          <div class="delta {% if metrics.rate_delta >= 0 %}up{% else %}down{% endif %}">
+            {% if metrics.rate_delta >= 0 %}↑{% else %}↓{% endif %}
+            {{ metrics.rate_delta|floatformat:1 }}% than last month
+          </div>
+          <canvas class="spark" id="sparkRate" width="90" height="40"></canvas>
+        </div>
+
+        <div class="metric-card">
+          <div class="label">Revenue (Confirmed)</div>
+          <div class="value">KES {{ metrics.revenue|floatformat:0 }}</div>
+          <div class="delta {% if metrics.revenue_delta >= 0 %}up{% else %}down{% endif %}">
+            {% if metrics.revenue_delta >= 0 %}↑{% else %}↓{% endif %}
+            {{ metrics.revenue_delta|floatformat:1 }}% than last month
+          </div>
+          <canvas class="spark" id="sparkRevenue" width="90" height="40"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ SECTION 2: Trends ════ -->
+    <section id="section-trends" class="dash-section">
+      <h2 class="section-title">
+        <span class="icon"></span>
+        Trends
+      </h2>
+      <div class="mid-row">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Bookings Over Time</h3>
+            <select id="chartRange">
+              <option value="7">7 days</option>
+              <option value="30" selected>30 days</option>
+              <option value="90">90 days</option>
+            </select>
+          </div>
+          <canvas id="bookingsChart" height="180"></canvas>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Booking Volume</h3>
+          </div>
+          <div class="big-stat">
+            {{ metrics.total_bookings }}
+            <span class="unit">total</span>
+          </div>
+          <div class="delta up" style="font-size:0.8rem;margin-top:0.25rem;color:#16a34a;">
+            ↑ {{ metrics.volume_delta|floatformat:0 }}% this period
+          </div>
+          <div class="stat-pills">
+            <div class="stat-pill">
+              <div class="icon">✓</div>
+              <div class="text">
+                <strong>{{ metrics.confirmed_count }} Confirmed</strong>
+                <span>{{ metrics.confirmed_pct }}% of total</span>
+              </div>
+            </div>
+            <div class="stat-pill">
+              <div class="icon">⏳</div>
+              <div class="text">
+                <strong>{{ metrics.pending_count }} Pending / Payment</strong>
+                <span>Awaiting action</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ SECTION 3: Live Bookings ════ -->
+    <section id="section-live" class="dash-section">
+      <h2 class="section-title">
+        <span class="icon">📋</span>
+        Live Bookings
+      </h2>
+      <div class="panel table-panel">
+        <div class="panel-header">
+          <h3>Recent activity (real-time)</h3>
+          <select>
+            <option>All statuses</option>
+            <option>Confirmed</option>
+            <option>Pending</option>
+          </select>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Resource</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-body">
+            {% for booking in recent_bookings %}
+            <tr data-reference="{{ booking.reference }}">
+              <td><strong>{{ booking.reference }}</strong></td>
+              <td>{{ booking.resource.name }}</td>
+              <td>{{ booking.customer.username }}</td>
+              <td>
+                <span class="status-chip {{ booking.status }}">
+                  {{ booking.get_status_display }}
+                </span>
+              </td>
+              <td style="color:#6b7280;font-size:0.8rem;">
+                {{ booking.updated_at|date:"M d, H:i" }}
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center;color:#6b7280;padding:1.5rem;">No bookings yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ════ SECTION 4: Status Breakdown ════ -->
+    <section id="section-status" class="dash-section">
+      <h2 class="section-title">
+        <span class="icon">🎯</span>
+        Status Breakdown
+      </h2>
+      <div class="map-card" style="max-width:420px;">
+        <h3>Status Distribution</h3>
+        <canvas id="statusChart" height="160"></canvas>
+        <div class="region-stat">
+          <div class="pct">{{ metrics.confirmation_rate }}%</div>
+          <div class="lbl">Bookings reaching Confirmed</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+  // ── Smooth scroll + active nav highlight ──
+  const sectionLinks = document.querySelectorAll("#section-nav .nav-link");
+  const sections = document.querySelectorAll(".dash-section");
+
+  sectionLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = document.getElementById(link.dataset.section);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      sectionLinks.forEach(l => l.classList.remove("active"));
+      link.classList.add("active");
+    });
+  });
+
+  // Highlight sidebar item while scrolling
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        sectionLinks.forEach(l => {
+          l.classList.toggle("active", l.dataset.section === id);
+        });
+      }
+    });
+  }, { rootMargin: "-20% 0px -60% 0px", threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // ── WebSocket ──
+  const indicator = document.getElementById("connection-indicator");
+  const tbody = document.getElementById("bookings-body");
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  const socket = new WebSocket(`${protocol}//${window.location.host}/ws/dashboard/`);
+
+  socket.onopen = () => {
+    indicator.textContent = "● System Live";
+    indicator.className = "badge bg-success";
+  };
+  socket.onclose = () => {
+    indicator.textContent = "⚠ Real-time connection interrupted";
+    indicator.className = "badge bg-danger";
+  };
+  socket.onerror = () => {
+    indicator.textContent = "⚠ Real-time connection interrupted";
+    indicator.className = "badge bg-danger";
+  };
+
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === "connection.established") return;
+
+    let row = tbody.querySelector(`tr[data-reference="${data.reference}"]`);
+    if (!row) {
+      row = document.createElement("tr");
+      row.dataset.reference = data.reference;
+      tbody.prepend(row);
+    }
+    const statusClass = (data.status || "").toLowerCase().replace(/ /g, "_");
+    row.innerHTML = `
+      <td><strong>${data.reference}</strong></td>
+      <td>${data.resource}</td>
+      <td>${data.customer}</td>
+      <td><span class="status-chip ${statusClass}">${data.status}</span></td>
+      <td style="color:#6b7280;font-size:0.8rem;">${data.updated_at}</td>
+    `;
+    row.classList.add("highlight-row");
+    setTimeout(() => row.classList.remove("highlight-row"), 2000);
+  };
+
+  // ── Charts ──
+  function makeSpark(canvasId, data, color) {
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: data.map((_, i) => i),
+        datasets: [{
+          data,
+          borderColor: color,
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.4,
+          fill: false,
+        }],
+      },
+      options: {
+        responsive: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: { x: { display: false }, y: { display: false } },
+      },
+    });
+  }
+
+  makeSpark("sparkActive", {{ metrics.spark_active|safe }}, "#86efac");
+  makeSpark("sparkRate", {{ metrics.spark_rate|safe }}, "#22c55e");
+  makeSpark("sparkRevenue", {{ metrics.spark_revenue|safe }}, "#16a34a");
+
+  new Chart(document.getElementById("bookingsChart"), {
+    type: "bar",
+    data: {
+      labels: {{ metrics.chart_labels|safe }},
+      datasets: [{
+        label: "Bookings",
+        data: {{ metrics.chart_data|safe }},
+        backgroundColor: "#22c55e",
+        borderRadius: 6,
+        borderSkipped: false,
+        barPercentage: 0.6,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { backgroundColor: "#0f1a14", padding: 10, cornerRadius: 8 },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: "#9ca3af", font: { size: 11 } } },
+        y: { beginAtZero: true, grid: { color: "#f3f4f6" }, ticks: { color: "#9ca3af", font: { size: 11 }, stepSize: 1 } },
+      },
+    },
+  });
+
+  new Chart(document.getElementById("statusChart"), {
+    type: "doughnut",
+    data: {
+      labels: {{ metrics.status_labels|safe }},
+      datasets: [{
+        data: {{ metrics.status_counts|safe }},
+        backgroundColor: ["#22c55e", "#eab308", "#ef4444", "#6366f1", "#f97316", "#94a3b8"],
+        borderWidth: 0,
+        hoverOffset: 6,
+      }],
+    },
+    options: {
+      responsive: true,
+      cutout: "65%",
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: { color: "#d1fae5", font: { size: 11 }, boxWidth: 10, padding: 12 },
+        },
+      },
+    },
+  });
+</script>
+{% endblock %}
