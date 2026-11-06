@@ -1,0 +1,1346 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="THERNALFLEX — Premium fashion, streetwear and lifestyle clothing in Kenya.">
+<title>THERNALFLEX | Premium Fashion Store</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --black:#111;
+    --white:#fff;
+    --grey:#f5f5f5;
+    --muted:#777;
+    --accent:#c6ff00;
+    --border:#e8e8e8;
+}
+
+* {margin:0;padding:0;box-sizing:border-box}
+
+html {scroll-behavior:smooth}
+
+body {
+    font-family:'DM Sans',sans-serif;
+    color:var(--black);
+    background:white;
+}
+
+a {text-decoration:none;color:inherit}
+button {font:inherit;cursor:pointer}
+img {display:block;max-width:100%}
+
+.container {width:88%;max-width:1450px;margin:auto}
+
+/* ANNOUNCEMENT */
+
+.topbar {
+    background:#111;
+    color:white;
+    text-align:center;
+    padding:11px;
+    font-size:10px;
+    letter-spacing:2px;
+    font-weight:600;
+}
+
+.topbar span {color:var(--accent)}
+
+/* NAVIGATION */
+
+header {
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:white;
+    border-bottom:1px solid var(--border);
+}
+
+.navbar {
+    height:82px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:88%;
+    max-width:1450px;
+    margin:auto;
+}
+
+.logo {
+    font-family:'Oswald',sans-serif;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:-1px;
+}
+
+.logo span {color:#888}
+
+.nav-links {
+    display:flex;
+    gap:32px;
+    list-style:none;
+}
+
+.nav-links a {
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.nav-links a:hover {color:#888}
+
+.nav-actions {
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-btn {
+    background:none;
+    border:none;
+    font-size:21px;
+    position:relative;
+}
+
+.cart-count {
+    position:absolute;
+    top:-8px;
+    right:-9px;
+    background:var(--accent);
+    border-radius:50%;
+    width:17px;
+    height:17px;
+    display:grid;
+    place-items:center;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.menu-toggle {display:none}
+
+/* HERO */
+
+.hero {
+    min-height:680px;
+    height:82vh;
+    max-height:850px;
+    position:relative;
+    display:flex;
+    align-items:center;
+    color:white;
+    background:
+    linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.05)),
+    url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=2000&q=90') center/cover;
+}
+
+.hero-content {width:88%;max-width:1450px;margin:auto}
+
+.hero-tag {
+    color:var(--accent);
+    letter-spacing:4px;
+    font-size:11px;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.hero h1 {
+    font-family:'Oswald',sans-serif;
+    font-size:clamp(65px,9vw,120px);
+    line-height:.94;
+    margin-bottom:25px;
+}
+
+.hero h1 span {color:var(--accent)}
+
+.hero p {
+    max-width:470px;
+    color:#ddd;
+    line-height:1.9;
+    font-size:14px;
+    margin-bottom:35px;
+}
+
+.btn {
+    display:inline-block;
+    background:var(--accent);
+    border:1px solid var(--accent);
+    color:black;
+    padding:17px 32px;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:1px;
+    transition:.3s;
+}
+
+.btn:hover {
+    background:transparent;
+    color:white;
+}
+
+.hero-note {
+    position:absolute;
+    bottom:35px;
+    right:6%;
+    font-size:10px;
+    letter-spacing:3px;
+}
+
+/* FEATURES */
+
+.features {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    background:#f6f6f6;
+    padding:27px 6%;
+    text-align:center;
+}
+
+.feature {
+    border-right:1px solid #ddd;
+    padding:8px;
+}
+
+.feature:last-child {border:0}
+
+.feature-icon {font-size:22px;margin-bottom:8px}
+
+.feature h4 {
+    font-size:11px;
+    text-transform:uppercase;
+    margin-bottom:6px;
+}
+
+.feature p {font-size:10px;color:#888}
+
+/* SECTION HEADINGS */
+
+section {padding:85px 0}
+
+.section-header {
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    margin-bottom:38px;
+}
+
+.eyebrow {
+    color:#999;
+    font-size:10px;
+    letter-spacing:3px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.section-header h2 {
+    font-family:'Oswald',sans-serif;
+    font-size:42px;
+    text-transform:uppercase;
+}
+
+.view-all {
+    font-size:10px;
+    font-weight:bold;
+    border-bottom:1px solid;
+    padding-bottom:5px;
+}
+
+/* CATEGORIES */
+
+.category-grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+}
+
+.category-card {
+    height:410px;
+    position:relative;
+    overflow:hidden;
+    background:#eee;
+}
+
+.category-card img {
+    height:100%;
+    width:100%;
+    object-fit:cover;
+    transition:.6s;
+}
+
+.category-card:hover img {transform:scale(1.07)}
+
+.category-overlay {
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:end;
+    padding:30px;
+    color:white;
+    background:linear-gradient(transparent,rgba(0,0,0,.8));
+}
+
+.category-overlay h3 {
+    font-family:'Oswald',sans-serif;
+    font-size:35px;
+}
+
+.category-overlay p {
+    font-size:10px;
+    letter-spacing:2px;
+    margin-top:8px;
+}
+
+/* PRODUCT FILTERS */
+
+.filter-bar {
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:30px;
+}
+
+.filter-btn {
+    border:1px solid #ddd;
+    background:white;
+    padding:11px 18px;
+    font-size:10px;
+    font-weight:bold;
+    text-transform:uppercase;
+    transition:.2s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background:black;
+    color:white;
+    border-color:black;
+}
+
+/* PRODUCTS */
+
+.product-grid {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+}
+
+.product-card {min-width:0}
+
+.product-image {
+    height:340px;
+    position:relative;
+    overflow:hidden;
+    background:#f2f2f2;
+}
+
+.product-image img {
+    height:100%;
+    width:100%;
+    object-fit:cover;
+    transition:.5s;
+}
+
+.product-card:hover img {transform:scale(1.05)}
+
+.product-tag {
+    position:absolute;
+    top:14px;
+    left:14px;
+    background:white;
+    padding:7px 10px;
+    font-size:9px;
+    font-weight:bold;
+}
+
+.wishlist {
+    position:absolute;
+    top:12px;
+    right:12px;
+    border:0;
+    background:white;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    font-size:18px;
+}
+
+.wishlist.active {color:red}
+
+.quick-add {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:black;
+    color:white;
+    border:0;
+    padding:15px;
+    font-size:10px;
+    font-weight:bold;
+    letter-spacing:1px;
+    transform:translateY(100%);
+    transition:.3s;
+}
+
+.product-card:hover .quick-add {transform:translateY(0)}
+
+.product-details {padding:17px 0}
+
+.product-category {
+    font-size:9px;
+    color:#999;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.product-details h3 {
+    font-size:13px;
+    margin:8px 0;
+}
+
+.rating {
+    color:#d39b00;
+    font-size:11px;
+    margin-bottom:8px;
+}
+
+.price {font-size:14px;font-weight:bold}
+
+.old-price {
+    color:#aaa;
+    font-weight:normal;
+    font-size:12px;
+    text-decoration:line-through;
+    margin-left:7px;
+}
+
+/* PROMOTIONAL BANNER */
+
+.promo {
+    min-height:450px;
+    display:flex;
+    align-items:center;
+    color:white;
+    background:
+    linear-gradient(90deg,rgba(0,0,0,.8),rgba(0,0,0,.12)),
+    url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1800&q=90') center/cover;
+}
+
+.promo-content {max-width:1450px;width:88%;margin:auto}
+
+.promo h2 {
+    font-family:'Oswald',sans-serif;
+    font-size:75px;
+    line-height:1;
+    margin:15px 0 25px;
+}
+
+.promo p {
+    max-width:420px;
+    color:#ddd;
+    font-size:13px;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+/* BRAND STORY */
+
+.story-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:70px;
+    align-items:center;
+}
+
+.story-image img {
+    width:100%;
+    height:480px;
+    object-fit:cover;
+}
+
+.story-text h2 {
+    font-family:'Oswald',sans-serif;
+    font-size:50px;
+    margin-bottom:20px;
+}
+
+.story-text p {
+    color:#777;
+    font-size:13px;
+    line-height:2;
+    margin-bottom:18px;
+}
+
+.story-stat {
+    display:flex;
+    gap:35px;
+    margin-top:30px;
+}
+
+.story-stat h3 {
+    font-family:'Oswald',sans-serif;
+    font-size:30px;
+}
+
+.story-stat p {font-size:10px}
+
+/* TESTIMONIALS */
+
+.testimonials {
+    background:#f6f6f6;
+    text-align:center;
+}
+
+.testimonial-grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-top:35px;
+}
+
+.testimonial {
+    background:white;
+    padding:35px 25px;
+}
+
+.testimonial .stars {color:#d39b00;margin-bottom:15px}
+
+.testimonial p {
+    color:#777;
+    font-size:12px;
+    line-height:1.9;
+    margin-bottom:20px;
+}
+
+.testimonial h4 {font-size:12px}
+
+/* NEWSLETTER */
+
+.newsletter {
+    text-align:center;
+    background:#f4f4f4;
+    padding:80px 20px;
+}
+
+.newsletter h2 {
+    font-family:'Oswald',sans-serif;
+    font-size:42px;
+}
+
+.newsletter p {
+    color:#777;
+    font-size:12px;
+    margin:12px 0 25px;
+}
+
+.newsletter-form {
+    display:flex;
+    max-width:500px;
+    margin:auto;
+}
+
+.newsletter-form input {
+    flex:1;
+    min-width:0;
+    padding:17px;
+    border:1px solid #ddd;
+    outline:none;
+}
+
+.newsletter-form button {
+    background:black;
+    color:white;
+    border:0;
+    padding:0 25px;
+    font-size:10px;
+    font-weight:bold;
+}
+
+/* FOOTER */
+
+footer {
+    background:#101010;
+    color:white;
+    padding:70px 0 25px;
+}
+
+.footer-grid {
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:40px;
+    margin-bottom:50px;
+}
+
+.footer-brand p {
+    max-width:290px;
+    color:#999;
+    font-size:12px;
+    line-height:1.9;
+    margin-top:18px;
+}
+
+.footer-column h4 {
+    font-size:11px;
+    letter-spacing:2px;
+    margin-bottom:20px;
+}
+
+.footer-column a {
+    display:block;
+    color:#999;
+    font-size:11px;
+    margin-bottom:14px;
+}
+
+.footer-column a:hover {color:white}
+
+.footer-bottom {
+    border-top:1px solid #333;
+    padding-top:25px;
+    display:flex;
+    justify-content:space-between;
+    color:#888;
+    font-size:10px;
+}
+
+/* CART DRAWER */
+
+.cart-overlay {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    z-index:1999;
+    display:none;
+}
+
+.cart-overlay.show {display:block}
+
+.cart-drawer {
+    position:fixed;
+    top:0;
+    right:-450px;
+    width:100%;
+    max-width:420px;
+    height:100vh;
+    background:white;
+    z-index:2000;
+    padding:28px;
+    transition:.3s;
+    display:flex;
+    flex-direction:column;
+}
+
+.cart-drawer.show {right:0}
+
+.cart-heading {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:20px;
+    border-bottom:1px solid #eee;
+}
+
+.cart-heading h3 {
+    font-family:'Oswald',sans-serif;
+    font-size:25px;
+}
+
+.close-cart {
+    background:none;
+    border:0;
+    font-size:25px;
+}
+
+.cart-items {
+    flex:1;
+    overflow:auto;
+    padding:20px 0;
+}
+
+.cart-item {
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:15px 0;
+    border-bottom:1px solid #eee;
+}
+
+.cart-item h4 {font-size:12px;margin-bottom:7px}
+
+.cart-item p {font-size:12px;font-weight:bold}
+
+.cart-item button {
+    border:0;
+    background:none;
+    color:#999;
+    font-size:11px;
+    margin-top:8px;
+}
+
+.cart-footer {border-top:1px solid #eee;padding-top:20px}
+
+.cart-total {
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.checkout-btn {
+    width:100%;
+    background:black;
+    color:white;
+    border:0;
+    padding:17px;
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.empty-cart {
+    text-align:center;
+    color:#888;
+    padding:60px 10px;
+    font-size:13px;
+}
+
+/* TOAST */
+
+.toast {
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:black;
+    color:white;
+    padding:16px 25px;
+    font-size:12px;
+    z-index:3000;
+    opacity:0;
+    transform:translateY(20px);
+    transition:.3s;
+    pointer-events:none;
+}
+
+.toast.show {opacity:1;transform:translateY(0)}
+
+/* WHATSAPP */
+
+.whatsapp {
+    position:fixed;
+    bottom:25px;
+    left:25px;
+    background:#25D366;
+    color:white;
+    width:53px;
+    height:53px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    font-size:24px;
+    z-index:900;
+    box-shadow:0 4px 15px #0002;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px) {
+    .product-grid {grid-template-columns:repeat(2,1fr)}
+    .product-image {height:350px}
+    .footer-grid {grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:750px) {
+    .navbar {height:72px}
+    .menu-toggle {display:block}
+    .nav-links {
+        display:none;
+        position:absolute;
+        top:72px;
+        left:0;
+        background:white;
+        width:100%;
+        padding:25px 6%;
+        flex-direction:column;
+        gap:23px;
+    }
+    .nav-links.active {display:flex}
+    .hero {min-height:590px}
+    .features {grid-template-columns:repeat(2,1fr);gap:20px}
+    .feature:nth-child(2) {border:0}
+    .category-grid {grid-template-columns:1fr}
+    .category-card {height:380px}
+    .story-grid {grid-template-columns:1fr;gap:35px}
+    .story-image img {height:350px}
+    .testimonial-grid {grid-template-columns:1fr}
+    .promo h2 {font-size:55px}
+    section {padding:65px 0}
+    .footer-bottom {gap:15px;flex-direction:column}
+}
+
+@media(max-width:450px) {
+    .container,.navbar,.hero-content {width:92%}
+    .logo {font-size:26px}
+    .product-grid {gap:12px}
+    .product-image {height:230px}
+    .product-details h3 {font-size:11px}
+    .section-header h2 {font-size:30px}
+    .section-header {gap:10px}
+    .view-all {font-size:9px}
+    .newsletter-form button {padding:0 13px}
+    .footer-grid {gap:25px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    FREE DELIVERY ON ORDERS ABOVE <span>KES 5,000</span> | SHOP THE LATEST COLLECTION
+</div>
+
+<header>
+    <nav class="navbar">
+        <a href="#" class="logo">THERNAL<span>FLEX.</span></a>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#">Home</a></li>
+            <li><a href="#categories">Collections</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#about">Our Story</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <button class="nav-btn" onclick="document.getElementById('shop').scrollIntoView()" aria-label="Search products">⌕</button>
+            <button class="nav-btn" onclick="openCart()" aria-label="Open shopping cart">
+                🛍
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+            <button class="nav-btn menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation">☰</button>
+        </div>
+    </nav>
+</header>
+
+<!-- HERO -->
+
+<div class="hero">
+    <div class="hero-content">
+        <div class="hero-tag">THERNALFLEX / COLLECTION 2026</div>
+        <h1>STYLE IS<br>YOUR <span>POWER.</span></h1>
+        <p>Discover premium everyday fashion designed for people who refuse to blend in. Express yourself. Be different. Own your flex.</p>
+        <a href="#shop" class="btn">EXPLORE COLLECTION →</a>
+    </div>
+    <div class="hero-note">BE BOLD. BE DIFFERENT. BE YOU.</div>
+</div>
+
+<!-- FEATURES -->
+
+<div class="features">
+    <div class="feature">
+        <div class="feature-icon">✦</div>
+        <h4>Premium Quality</h4>
+        <p>Quality meets everyday comfort</p>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">↗</div>
+        <h4>Fast Delivery</h4>
+        <p>Delivery across Kenya</p>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">◇</div>
+        <h4>Secure Payments</h4>
+        <p>Convenient M-Pesa payments</p>
+    </div>
+    <div class="feature">
+        <div class="feature-icon">♡</div>
+        <h4>Customer First</h4>
+        <p>Here to help you shop better</p>
+    </div>
+</div>
+
+<main>
+
+<!-- CATEGORIES -->
+
+<section id="categories">
+<div class="container">
+    <div class="section-header">
+        <div>
+            <div class="eyebrow">EXPLORE YOUR STYLE</div>
+            <h2>OUR COLLECTIONS</h2>
+        </div>
+        <a href="#shop" class="view-all">VIEW EVERYTHING →</a>
+    </div>
+
+    <div class="category-grid">
+        <a href="#shop" class="category-card">
+            <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=85" alt="Women's fashion collection">
+            <div class="category-overlay">
+                <h3>WOMEN'S WEAR</h3>
+                <p>DISCOVER THE COLLECTION →</p>
+            </div>
+        </a>
+
+        <a href="#shop" class="category-card">
+            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=85" alt="Men's fashion collection">
+            <div class="category-overlay">
+                <h3>MEN'S WEAR</h3>
+                <p>DISCOVER THE COLLECTION →</p>
+            </div>
+        </a>
+
+        <a href="#shop" class="category-card">
+            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=85" alt="Streetwear collection">
+            <div class="category-overlay">
+                <h3>STREETWEAR</h3>
+                <p>DISCOVER THE COLLECTION →</p>
+            </div>
+        </a>
+    </div>
+</div>
+</section>
+
+<!-- SHOP -->
+
+<section id="shop" style="background:#fafafa">
+<div class="container">
+    <div class="section-header">
+        <div>
+            <div class="eyebrow">HANDPICKED FOR YOU</div>
+            <h2>THE LATEST DROPS</h2>
+        </div>
+        <a href="#shop" class="view-all">SHOP ALL →</a>
+    </div>
+
+    <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterProducts('all',this)">All Products</button>
+        <button class="filter-btn" onclick="filterProducts('men',this)">Men</button>
+        <button class="filter-btn" onclick="filterProducts('women',this)">Women</button>
+        <button class="filter-btn" onclick="filterProducts('streetwear',this)">Streetwear</button>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+
+        <article class="product-card" data-category="men streetwear">
+            <div class="product-image">
+                <span class="product-tag">BEST SELLER</span>
+                <button class="wishlist" onclick="toggleWish(this)" aria-label="Add to wishlist">♡</button>
+                <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=700&q=85" alt="Urban black jacket">
+                <button class="quick-add" onclick="addToCart('Urban Black Jacket',3500)">ADD TO BAG +</button>
+            </div>
+            <div class="product-details">
+                <div class="product-category">Men / Outerwear</div>
+                <h3>Urban Black Jacket</h3>
+                <div class="rating">★★★★★ <span style="color:#999"> (12 reviews)</span></div>
+                <div class="price">KES 3,500</div>
+            </div>
+        </article>
+
+        <article class="product-card" data-category="women">
+            <div class="product-image">
+                <span class="product-tag">NEW ARRIVAL</span>
+                <button class="wishlist" onclick="toggleWish(this)" aria-label="Add to wishlist">♡</button>
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=85" alt="Essential white T-shirt">
+                <button class="quick-add" onclick="addToCart('Essential White Tee',1500)">ADD TO BAG +</button>
+            </div>
+            <div class="product-details">
+                <div class="product-category">Essentials / Tops</div>
+                <h3>Essential White Tee</h3>
+                <div class="rating">★★★★★ <span style="color:#999">(8 reviews)</span></div>
+                <div class="price">KES 1,500</div>
+            </div>
+        </article>
+
+        <article class="product-card" data-category="men streetwear">
+            <div class="product-image">
+                <span class="product-tag">TRENDING</span>
+                <button class="wishlist" onclick="toggleWish(this)" aria-label="Add to wishlist">♡</button>
+                <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=700&q=85" alt="Premium street hoodie">
+                <button class="quick-add" onclick="addToCart('Premium Street Hoodie',2800)">ADD TO BAG +</button>
+            </div>
+            <div class="product-details">
+                <div class="product-category">Streetwear / Hoodies</div>
+                <h3>Premium Street Hoodie</h3>
+                <div class="rating">★★★★★ <span style="color:#999">(15 reviews)</span></div>
+                <div class="price">KES 2,800</div>
+            </div>
+        </article>
+
+        <article class="product-card" data-category="men">
+            <div class="product-image">
+                <span class="product-tag">POPULAR</span>
+                <button class="wishlist" onclick="toggleWish(this)" aria-label="Add to wishlist">♡</button>
+                <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=700&q=85" alt="Classic denim jeans">
+                <button class="quick-add" onclick="addToCart('Classic Denim Jeans',2400)">ADD TO BAG +</button>
+            </div>
+            <div class="product-details">
+                <div class="product-category">Men / Bottoms</div>
+                <h3>Classic Denim Jeans</h3>
+                <div class="rating">★★★★☆ <span style="color:#999">(6 reviews)</span></div>
+                <div class="price">KES 2,400</div>
+            </div>
+        </article>
+
+        <article class="product-card" data-category="women">
+            <div class="product-image">
+                <span class="product-tag">NEW</span>
+                <button class="wishlist" onclick="toggleWish(this)" aria-label="Add to wishlist">♡</button>
+                <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=700&q=85" alt="Women's fashion outfit">
+                <button class="quick-add" onclick="addToCart('Classic Fashion Outfit',3200)">ADD TO BAG +</button>
+            </div>
+            <div class="product-details">
+                <div class="product-category">Women / Fashion</div>
+                <h3>Classic Fashion Outfit</h3>
+                <div class="rating">★★★★★ <span style="color:#999">(9 reviews)</span></div>
+                <div class="price">KES 3,200</div>
+            </div>
+        </article>
+
+        <article class="product-card" data-category="streetwear men">
+            <div class="product-image">
+                <span class="product-tag">LIMITED</span>
+                <button class="wishlist" onclick="toggleWish(this)" aria-label="Add to wishlist">♡</button>
+                <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=700&q=85" alt="Streetwear graphic shirt">
+                <button class="quick-add" onclick="addToCart('Graphic Street Tee',1800)">ADD TO BAG +</button>
+            </div>
+            <div class="product-details">
+                <div class="product-category">Streetwear / T-Shirts</div>
+                <h3>Graphic Street Tee</h3>
+                <div class="rating">★★★★★ <span style="color:#999">(11 reviews)</span></div>
+                <div class="price">KES 1,800</div>
+            </div>
+        </article>
+
+        <article class="product-card" data-category="men streetwear">
+            <div class="product-image">
+                <span class="product-tag">FLEX PICK</span>
+                <button class="wishlist" onclick="toggleWish(this)" aria-label="Add to wishlist">♡</button>
+                <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=700&q=85" alt="Fashion jacket">
+                <button class="quick-add" onclick="addToCart('Urban Everyday Wear',3000)">ADD TO BAG +</button>
+            </div>
+            <div class="product-details">
+                <div class="product-category">Men / Streetwear</div>
+                <h3>Urban Everyday Wear</h3>
+                <div class="rating">★★★★☆ <span style="color:#999">(7 reviews)</span></div>
+                <div class="price">KES 3,000</div>
+            </div>
+        </article>
+
+        <article class="product-card" data-category="women">
+            <div class="product-image">
+                <span class="product-tag">POPULAR</span>
+                <button class="wishlist" onclick="toggleWish(this)" aria-label="Add to wishlist">♡</button>
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=85" alt="Women's casual fashion">
+                <button class="quick-add" onclick="addToCart('Casual Weekend Look',2700)">ADD TO BAG +</button>
+            </div>
+            <div class="product-details">
+                <div class="product-category">Women / Casual</div>
+                <h3>Casual Weekend Look</h3>
+                <div class="rating">★★★★★ <span style="color:#999">(13 reviews)</span></div>
+                <div class="price">KES 2,700</div>
+            </div>
+        </article>
+
+    </div>
+</div>
+</section>
+
+<!-- PROMOTION -->
+
+<div class="promo">
+    <div class="promo-content">
+        <div class="eyebrow" style="color:#c6ff00">THE THERNALFLEX EXPERIENCE</div>
+        <h2>DON'T FOLLOW<br>THE STYLE.<br>CREATE IT.</h2>
+        <p>Step into a world where confidence meets fashion. Find pieces that speak your personality and make every outfit count.</p>
+        <a href="#shop" class="btn">SHOP YOUR LOOK →</a>
+    </div>
+</div>
+
+<!-- BRAND STORY -->
+
+<section id="about">
+<div class="container">
+    <div class="story-grid">
+        <div class="story-image">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85" alt="THERNALFLEX fashion lifestyle">
+        </div>
+        <div class="story-text">
+            <div class="eyebrow">WHO WE ARE</div>
+            <h2>MORE THAN JUST CLOTHING.</h2>
+            <p>THERNALFLEX is built around a simple idea: fashion should be an expression of who you are.</p>
+            <p>We bring together contemporary streetwear, everyday essentials and modern fashion to help you create your own identity.</p>
+            <p>Whether you're stepping out with friends, heading to work or simply expressing your creativity, your style should always speak for you.</p>
+            <a href="#shop" class="btn" style="background:black;color:white;border-color:black">DISCOVER THERNALFLEX →</a>
+
+            <div class="story-stat">
+                <div>
+                    <h3>STYLE</h3>
+                    <p>Express yourself</p>
+                </div>
+                <div>
+                    <h3>QUALITY</h3>
+                    <p>Wear with confidence</p>
+                </div>
+                <div>
+                    <h3>FLEX</h3>
+                    <p>Own your identity</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+
+<section class="testimonials">
+<div class="container">
+    <div class="eyebrow">CUSTOMER EXPERIENCES</div>
+    <h2 style="font-family:'Oswald';font-size:42px">WHAT PEOPLE SAY</h2>
+
+    <div class="testimonial-grid">
+        <div class="testimonial">
+            <div class="stars">★★★★★</div>
+            <p>"The quality and fit are amazing. Definitely one of my favourite places to shop for everyday outfits."</p>
+            <h4>Fashion Customer</h4>
+        </div>
+        <div class="testimonial">
+            <div class="stars">★★★★★</div>
+            <p>"I love the designs. Simple, clean and stylish. The whole shopping experience is great."</p>
+            <h4>Happy Customer</h4>
+        </div>
+        <div class="testimonial">
+            <div class="stars">★★★★★</div>
+            <p>"Great selection and beautiful clothing. Can't wait to see the next collection."</p>
+            <h4>Verified Buyer</h4>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- NEWSLETTER -->
+
+<div class="newsletter">
+    <div class="eyebrow">JOIN THE FLEX COMMUNITY</div>
+    <h2>GET THE LATEST DROPS FIRST.</h2>
+    <p>Get updates on new collections, exclusive offers and special promotions.</p>
+
+    <form class="newsletter-form" onsubmit="subscribe(event)">
+        <input type="email" placeholder="Your email address" required>
+        <button type="submit">SUBSCRIBE →</button>
+    </form>
+</div>
+
+</main>
+
+<!-- FOOTER -->
+
+<footer id="contact">
+<div class="container">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <a href="#" class="logo">THERNAL<span>FLEX.</span></a>
+            <p>Define your style. Own your flex. Bringing contemporary fashion, streetwear and everyday essentials to your wardrobe.</p>
+            <p style="margin-top:15px">Kenya 🇰🇪</p>
+        </div>
+
+        <div class="footer-column">
+            <h4>SHOP</h4>
+            <a href="#shop">New Arrivals</a>
+            <a href="#shop">Men's Collection</a>
+            <a href="#shop">Women's Collection</a>
+            <a href="#shop">Streetwear</a>
+        </div>
+
+        <div class="footer-column">
+            <h4>HELP</h4>
+            <a href="#contact">Contact Us</a>
+            <a href="#contact">Delivery Information</a>
+            <a href="#contact">Returns & Exchanges</a>
+            <a href="#contact">FAQs</a>
+        </div>
+
+        <div class="footer-column">
+            <h4>FOLLOW US</h4>
+            <a href="#">Instagram</a>
+            <a href="#">TikTok</a>
+            <a href="#">Facebook</a>
+            <a href="#">WhatsApp</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 THERNALFLEX. ALL RIGHTS RESERVED.</p>
+        <p>PAYMENTS: M-PESA | KENYA SHILLINGS (KES)</p>
+    </div>
+</div>
+</footer>
+
+<!-- CART DRAWER -->
+
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+<div class="cart-drawer" id="cartDrawer">
+    <div class="cart-heading">
+        <h3>YOUR SHOPPING BAG</h3>
+        <button class="close-cart" onclick="closeCart()">×</button>
+    </div>
+
+    <div class="cart-items" id="cartItems">
+        <div class="empty-cart">Your shopping bag is empty.</div>
+    </div>
+
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Subtotal</span>
+            <span id="cartTotal">KES 0</span>
+        </div>
+        <button class="checkout-btn" onclick="checkout()">PROCEED TO CHECKOUT →</button>
+        <p style="font-size:10px;color:#999;text-align:center;margin-top:12px">Delivery fees calculated at checkout.</p>
+    </div>
+</div>
+
+<!-- WHATSAPP -->
+
+<a href="https://wa.me/254700000000?text=Hello%20THERNALFLEX%2C%20I%20would%20like%20to%20make%20an%20inquiry." class="whatsapp" target="_blank" rel="noopener" aria-label="Contact THERNALFLEX on WhatsApp">✆</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let cart = [];
+let toastTimer;
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('active');
+}
+
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('navLinks').classList.remove('active');
+    });
+});
+
+function filterProducts(category, button) {
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+
+    document.querySelectorAll('.product-card').forEach(card => {
+        const categories = card.dataset.category.split(' ');
+        card.style.display =
+            category === 'all' || categories.includes(category)
+            ? 'block' : 'none';
+    });
+}
+
+function addToCart(name, price) {
+    const existing = cart.find(item => item.name === name);
+
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({name, price, quantity:1});
+    }
+
+    updateCart();
+    showToast(name + ' added to your bag!');
+}
+
+function updateCart() {
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    document.getElementById('cartCount').textContent = totalItems;
+    document.getElementById('cartTotal').textContent = 'KES ' + total.toLocaleString();
+
+    const container = document.getElementById('cartItems');
+
+    if (cart.length === 0) {
+        container.innerHTML = '<div class="empty-cart">Your shopping bag is empty.</div>';
+        return;
+    }
+
+    container.innerHTML = cart.map((item,index) => `
+        <div class="cart-item">
+            <div>
+                <h4>${escapeHTML(item.name)}</h4>
+                <p>KES ${item.price.toLocaleString()}</p>
+                <button onclick="changeQuantity(${index},-1)">−</button>
+                <span style="font-size:12px;margin:0 10px">${item.quantity}</span>
+                <button onclick="changeQuantity(${index},1)">+</button>
+                <button onclick="removeItem(${index})">Remove</button>
+            </div>
+            <strong style="font-size:12px">KES ${(item.price * item.quantity).toLocaleString()}</strong>
+        </div>
+    `).join('');
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+    })[char]);
+}
+
+function changeQuantity(index, amount) {
+    cart[index].quantity += amount;
+    if (cart[index].quantity <= 0) cart.splice(index,1);
+    updateCart();
+}
+
+function removeItem(index) {
+    cart.splice(index,1);
+    updateCart();
+    showToast('Product removed from bag.');
+}
+
+function openCart() {
+    document.getElementById('cartDrawer').classList.add('show');
+    document.getElementById('cartOverlay').classList.add('show');
+}
+    doc
+function closeCart() {
+    document.getElementById('cartDrawer').classList.remove('show');
+    document.getElementById('cartOverlay').classList.remove('show');
+}
+
+function toggleWish(button) {
+    button.classList.toggle('active');
+    button.textContent = button.classList.contains('active') ? '♥' : '♡';
+    showToast(button.classList.contains('active') ? 'Added to wishlist!' : 'Removed from wishlist.');
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        showToast('Your shopping bag is empty.');
+        return;
+    }
+
+    showToast('Checkout requires a connected store backend.');
+}
+
+function subscribe(event) {
+    event.preventDefault();
+    showToast('Thank you for joining THERNALFLEX!');
+    event.target.reset();
+}
+</script>
+
+</body>
+</html>
