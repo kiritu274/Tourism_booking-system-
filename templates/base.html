@@ -5,31 +5,164 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Tourism Booking — Book With Confidence{% endblock %}</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+
+  <style>
+    /* ===== Mobile Bottom Navbar ===== */
+    .tb-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: #1a1a1a;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      padding-bottom: 8px;
+      z-index: 1040;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+    }
+
+    .tb-bottom-nav a {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: rgba(255,255,255,0.55);
+      font-size: 0.68rem;
+      font-weight: 500;
+      position: relative;
+      height: 100%;
+      transition: color 0.2s ease;
+    }
+
+    .tb-bottom-nav a .icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2px;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .tb-bottom-nav a svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.8;
+    }
+
+    .tb-bottom-nav a.active {
+      color: #fff;
+    }
+    .tb-bottom-nav a.active .icon-wrap {
+      background: #fff;
+      color: #1a1a1a;
+      transform: translateY(-14px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+    .tb-bottom-nav a.active svg {
+      stroke: #1a1a1a;
+    }
+
+    /* Push content above bottom bar on mobile */
+    @media (max-width: 991.98px) {
+      body {
+        padding-bottom: 80px;
+      }
+      .tb-whatsapp-float {
+        bottom: 90px !important;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .tb-bottom-nav {
+        display: none !important;
+      }
+    }
+
+    /* ===== Mobile Drawer ===== */
+    .tb-mobile-drawer {
+      background: #121212;
+      color: #f5f5f5;
+      width: 280px !important;
+      max-width: 85vw;
+    }
+
+    .tb-mobile-drawer .offcanvas-header {
+      background: #1a1a1a;
+    }
+
+    .tb-mobile-drawer .offcanvas-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      color: #f6ead4;
+    }
+
+    .tb-drawer-link {
+      display: flex;
+      align-items: center;
+      color: rgba(255,255,255,0.85) !important;
+      padding: 0.85rem 0.75rem !important;
+      border-radius: 10px;
+      font-weight: 500;
+      margin-bottom: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .tb-drawer-link:hover,
+    .tb-drawer-link:focus {
+      background: rgba(255,255,255,0.08);
+      color: #fff !important;
+    }
+
+    .tb-drawer-link svg {
+      opacity: 0.85;
+      flex-shrink: 0;
+    }
+
+    /* Hamburger styling */
+    .tb-navbar .navbar-toggler {
+      padding: 0.35rem 0.5rem;
+    }
+    .tb-navbar .navbar-toggler-icon {
+      filter: invert(1) brightness(1.8);
+    }
+  </style>
 </head>
 <body>
+
+  <!-- ============ TOP NAVBAR ============ -->
   <nav class="navbar navbar-expand-lg tb-navbar">
     <div class="container">
       <a class="navbar-brand" href="{% url 'booking_app:home' %}">Tourism Booking</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#tbNav">
+
+      <!-- Hamburger opens the drawer -->
+      <button class="navbar-toggler border-0 shadow-none" type="button"
+              data-bs-toggle="offcanvas" data-bs-target="#tbMobileDrawer"
+              aria-controls="tbMobileDrawer" aria-label="Open menu">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="tbNav">
+
+      <!-- Desktop navigation -->
+      <div class="collapse navbar-collapse d-none d-lg-flex" id="tbNav">
         <div class="navbar-nav ms-auto align-items-lg-center">
           <a class="nav-link" href="{% url 'booking_app:listing_list' %}">Listings</a>
           <a class="nav-link" href="{% url 'booking_app:booking_verify' %}">Verify Booking</a>
 
           {% if user.is_authenticated %}
-
-            {# Customer dashboard #}
             {% if user.is_customer %}
               <a class="nav-link" href="{% url 'booking_app:customer_dashboard' %}">My Dashboard</a>
             {% endif %}
-
-            {# Staff / Manager #}
             {% if user.is_booking_staff or user.is_manager %}
               <a class="nav-link" href="{% url 'booking_app:staff_dashboard' %}">Live Dashboard</a>
             {% endif %}
@@ -39,7 +172,6 @@
 
             <span class="nav-link tb-user">{{ user.username }}</span>
 
-            {# Logout — must be POST #}
             <form method="post" action="{% url 'booking_app:logout' %}" class="d-inline">
               {% csrf_token %}
               <button type="submit" class="nav-link btn btn-link border-0 p-0"
@@ -47,7 +179,6 @@
                 Logout
               </button>
             </form>
-
           {% else %}
             <a class="nav-link" href="{% url 'booking_app:login' %}">Login</a>
             <a class="nav-link" href="{% url 'booking_app:register' %}">Register</a>
@@ -57,6 +188,95 @@
     </div>
   </nav>
 
+  <!-- ============ MOBILE DRAWER ============ -->
+  <div class="offcanvas offcanvas-start tb-mobile-drawer" tabindex="-1" id="tbMobileDrawer"
+       aria-labelledby="tbMobileDrawerLabel">
+    <div class="offcanvas-header border-bottom border-secondary-subtle">
+      <h5 class="offcanvas-title" id="tbMobileDrawerLabel">Tourism Booking</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <div class="offcanvas-body d-flex flex-column p-0">
+      <nav class="nav flex-column px-3 py-3">
+        <a class="nav-link tb-drawer-link" href="{% url 'booking_app:home' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="me-3">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          Home
+        </a>
+
+        <a class="nav-link tb-drawer-link" href="{% url 'booking_app:listing_list' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="me-3">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          Listings
+        </a>
+
+        <a class="nav-link tb-drawer-link" href="{% url 'booking_app:booking_verify' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="me-3">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Verify Booking
+        </a>
+
+        {% if user.is_authenticated %}
+          {% if user.is_customer %}
+            <a class="nav-link tb-drawer-link" href="{% url 'booking_app:customer_dashboard' %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="me-3">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+              </svg>
+              My Dashboard
+            </a>
+          {% endif %}
+
+          {% if user.is_booking_staff or user.is_manager %}
+            <a class="nav-link tb-drawer-link" href="{% url 'booking_app:staff_dashboard' %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="me-3">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+              Live Dashboard
+            </a>
+          {% endif %}
+
+          {% if user.is_manager %}
+            <a class="nav-link tb-drawer-link" href="{% url 'booking_app:manager_user_list' %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="me-3">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+              Manage Users
+            </a>
+          {% endif %}
+        {% endif %}
+      </nav>
+
+      <div class="mt-auto border-top border-secondary-subtle px-3 py-3">
+        {% if user.is_authenticated %}
+          <div class="d-flex align-items-center mb-3 px-2">
+            <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-3"
+                 style="width:40px;height:40px;font-size:1.1rem;">
+              {{ user.username|first|upper }}
+            </div>
+            <div>
+              <div class="fw-semibold text-white">{{ user.username }}</div>
+              <small class="text-white-50">Logged in</small>
+            </div>
+          </div>
+
+          <form method="post" action="{% url 'booking_app:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light w-100">Logout</button>
+          </form>
+        {% else %}
+          <div class="d-grid gap-2">
+            <a href="{% url 'booking_app:login' %}" class="btn btn-tb-accent">Login</a>
+            <a href="{% url 'booking_app:register' %}" class="btn btn-outline-light">Register</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PAGE CONTENT ============ -->
   {% block full_width_content %}
     <div class="container pb-5 pt-4">
       {% block content %}{% endblock %}
@@ -76,6 +296,109 @@
     {% endfor %}
   </div>
 
+  <!-- ============ MOBILE BOTTOM NAV ============ -->
+  <nav class="tb-bottom-nav d-lg-none" aria-label="Mobile navigation">
+    <!-- Home -->
+    <a href="{% url 'booking_app:home' %}"
+       class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+      <div class="icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+      </div>
+      <span>Home</span>
+    </a>
+
+    <!-- Listings -->
+    <a href="{% url 'booking_app:listing_list' %}"
+       class="{% if request.resolver_match.url_name == 'listing_list' %}active{% endif %}">
+      <div class="icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </div>
+      <span>Listings</span>
+    </a>
+
+    <!-- Verify -->
+    <a href="{% url 'booking_app:booking_verify' %}"
+       class="{% if request.resolver_match.url_name == 'booking_verify' %}active{% endif %}">
+      <div class="icon-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <span>Verify</span>
+    </a>
+
+    <!-- Dashboard (role aware) -->
+    {% if user.is_authenticated %}
+      {% if user.is_customer %}
+        <a href="{% url 'booking_app:customer_dashboard' %}"
+           class="{% if 'dashboard' in request.resolver_match.url_name %}active{% endif %}">
+          <div class="icon-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+          </div>
+          <span>Dashboard</span>
+        </a>
+      {% elif user.is_booking_staff or user.is_manager %}
+        <a href="{% url 'booking_app:staff_dashboard' %}"
+           class="{% if 'dashboard' in request.resolver_match.url_name %}active{% endif %}">
+          <div class="icon-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+            </svg>
+          </div>
+          <span>Live</span>
+        </a>
+      {% else %}
+        <a href="{% url 'booking_app:home' %}">
+          <div class="icon-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+          </div>
+          <span>Account</span>
+        </a>
+      {% endif %}
+    {% else %}
+      <a href="{% url 'booking_app:login' %}"
+         class="{% if request.resolver_match.url_name == 'login' %}active{% endif %}">
+        <div class="icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
+        </div>
+        <span>Login</span>
+      </a>
+    {% endif %}
+
+    <!-- Profile / Register -->
+    {% if user.is_authenticated %}
+      <a href="{% url 'booking_app:customer_dashboard' %}">
+        <div class="icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
+        </div>
+        <span>Profile</span>
+      </a>
+    {% else %}
+      <a href="{% url 'booking_app:register' %}"
+         class="{% if request.resolver_match.url_name == 'register' %}active{% endif %}">
+        <div class="icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+          </svg>
+        </div>
+        <span>Register</span>
+      </a>
+    {% endif %}
+  </nav>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.querySelectorAll('.toast').forEach(function (el) {
@@ -83,6 +406,7 @@
     });
   </script>
   {% block extra_js %}{% endblock %}
+
   <!-- Floating WhatsApp -->
   <a href="https://wa.me/254115640806"
      class="tb-whatsapp-float"

@@ -11,7 +11,25 @@
 */
 /* ---------------------------------------------------------------------
    Floating WhatsApp button
+
 --------------------------------------------------------------------- */
+/* ===== Mobile polish ===== */
+@media (max-width: 575.98px) {
+  .tb-hero h1 {
+    font-size: 1.75rem;
+    line-height: 1.25;
+  }
+  .tb-search-card {
+    padding: 1.1rem !important;
+  }
+  .tb-section {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .tb-card-body h5, .tb-card-body h6 {
+    font-size: 0.95rem;
+  }
+}
 .tb-whatsapp-float {
   position: fixed;
   bottom: 1.5rem;
